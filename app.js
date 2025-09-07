@@ -102,7 +102,7 @@ app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
 app.use("/user",userrouter);
 app.get("/",(req,res)=>{
-    res.render("show.ejs");
+    res.render("show");
 });
 
 
