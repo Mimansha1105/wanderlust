@@ -100,7 +100,12 @@ app.use((req, res, next) => {
 
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
-app.use("/",userrouter);
+app.use("/user",userrouter);
+app.get("/",(req,res)=>{
+    res.render("show.ejs");
+});
+
+
 
 
 
