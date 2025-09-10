@@ -104,7 +104,7 @@ app.use("/user",userrouter);
 
 //Home/Index ROUTE
 app.get("/",(req,res)=>{
-    res.render("index.ejs");
+    res.render("listings/layouts/index.ejs");
 });
 
 
