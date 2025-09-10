@@ -3,7 +3,7 @@ const review=require("../models/review");
 
 
 module.exports.createreview= async (req, res) => {
-  const foundListing = await listing.findById(req.params.id); // use lowercase `listing` here since model is imported as `listing`
+  const foundListing = await listing.findById(req.params.id); 
 
   const newReview = new review(req.body.review);
   newReview.author=req.user._id;

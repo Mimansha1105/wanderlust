@@ -5,7 +5,7 @@ const ExpressError=require("../utils/expresserror.js");
 const {listingschema,reviewschema}=require("../schema.js");
 const review=require("../models/review.js");
 const listing = require("../models/listing.js");  
-const {isloggedin,isreviewauthor}=require("../models/middleware.js");// ✅ correct
+const {isloggedin,isreviewauthor}=require("../models/middleware.js");
 const validatereview=(req,res,next)=>{
   const result = reviewschema.validate(req.body.listings);
   console.log("Joi result:", result); 

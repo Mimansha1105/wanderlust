@@ -5,7 +5,7 @@ const mongourl = "mongodb://127.0.0.1:27017/wanderlust";
 
 main().then(() => {
     console.log("connected to database");
-    initdb(); // ✅ only after connection
+    initdb(); 
 }).catch(err => {
     console.log("DB Connection Error:", err);
 });
@@ -21,6 +21,6 @@ const initdb = async () => {
         await listing.insertMany(initdata.data);
         console.log("Data was initialized");
     } catch (err) {
-        console.error("Data init failed:", err); // Add helpful debug
+        console.error("Data init failed:", err); 
     }
 };
