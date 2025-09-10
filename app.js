@@ -104,7 +104,7 @@ app.use("/user",userrouter);
 
 //Home/Index ROUTE
 app.get("/",(req,res)=>{
-    res.redirect("listings/index");
+    res.redirect("listings");
 });
 
 
