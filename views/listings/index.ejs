@@ -18,6 +18,14 @@
     opacity: 1;
     cursor: pointer;
   }
+  .filter a{
+    color: inherit;
+    text-decoration: none;
+  }
+  .filter.active{
+    opacity: 1;
+    border-bottom: 2px solid #222;
+  }
   .tax-info{
     display: none;
   }
@@ -39,68 +47,92 @@
     </form> */-->
     <div id="filters">
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'trending' ? 'active' : '' %>">
+<a href="/listings?category=trending">
 <div><i class="fa-solid fa-fire"></i></div>
 <p>Trending</p>
+</a>
 </div>
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'rooms' ? 'active' : '' %>">
+<a href="/listings?category=rooms">
 <div><i class="fa-solid fa-bed"></i></div>
 <p>Rooms</p>
+</a>
 </div>
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'iconic cities' ? 'active' : '' %>">
+<a href="/listings?category=iconic%20cities">
 <div><i class="fa-solid fa-mountain-city"></i></div>
 <p>Iconic citites</p>
+</a>
 </div>
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'mountains' ? 'active' : '' %>">
+<a href="/listings?category=mountains">
 <div><i class="fa-solid fa-mountain"></i></div>
 <p>Mountains</p>
+</a>
 </div>
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'castles' ? 'active' : '' %>">
+<a href="/listings?category=castles">
 <div><i class="fa-brands fa-fort-awesome"></i></div>
 <p>Castles</p>
+</a>
 </div>
 
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'beaches' ? 'active' : '' %>">
+<a href="/listings?category=beaches">
 <div><i class="fa-solid fa-umbrella-beach"></i></div>
 <p>Beaches</p>
+</a>
 </div>
 
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'lakefronts' ? 'active' : '' %>">
+<a href="/listings?category=lakefronts">
 <div><i class="fa-solid fa-water"></i></div>
 <p>Lakefronts</p>
+</a>
 </div>
 
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'surfing' ? 'active' : '' %>">
+<a href="/listings?category=surfing">
 <div><i class="fa-solid fa-house-tsunami"></i></div>
 <p>Surfing</p>
+</a>
 </div>
 
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'bloosoms' ? 'active' : '' %>">
+<a href="/listings?category=bloosoms">
 <div><i class="fa-solid fa-fan"></i></div>
 <p>Bloosoms</p>
+</a>
 </div>
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'camping' ? 'active' : '' %>">
+<a href="/listings?category=camping">
 <div><i class="fa-solid fa-campground"></i></div>
 <p>Camping</p>
+</a>
 </div>
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'farms' ? 'active' : '' %>">
+<a href="/listings?category=farms">
 <div><i class="fa-solid fa-cow"></i></div>
 <p>Farms</p>
+</a>
 </div>
 
-<div class="filter">
+<div class="filter <%= categoryQuery === 'arctic' ? 'active' : '' %>">
+<a href="/listings?category=arctic">
 <div><i class="fa-solid fa-snowflake"></i></div>
 <p>Arctic</p>
+</a>
 </div>
 <div class="filter">
 
@@ -114,6 +146,14 @@
 </div>
 
     </div>
+<% if (alllistings.length === 0) { %>
+  <div class="text-center mt-5 mb-5">
+    <h3>Not available</h3>
+    <% if (searchQuery) { %>
+      <p>No hotel found for "<%= searchQuery %>".</p>
+    <% } %>
+  </div>
+<% } else { %>
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-3 mt-3">
 <%for(let listing of alllistings){%>
     <a href="/listings/<%=listing._id%>" class="listing-links">
@@ -133,6 +173,7 @@
 <%}%> 
 
 </div>
+<% } %>
 
  
 

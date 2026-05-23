@@ -1,7 +1,42 @@
 const listing=require("../models/listing");
 module.exports.index=async (req,res)=>{
-   const alllistings=await listing.find({});
-  res.render("listings/index", { alllistings })
+  const { q, category } = req.query;
+  const searchQuery = q ? q.trim() : "";
+  const categoryQuery = category ? category.trim().toLowerCase() : "";
+  let alllistings = await listing.find({});
+
+  if (categoryQuery) {
+    const categoryOrder = [
+      "trending",
+      "rooms",
+      "iconic cities",
+      "mountains",
+      "castles",
+      "beaches",
+      "lakefronts",
+      "surfing",
+      "bloosoms",
+      "camping",
+      "farms",
+      "arctic",
+    ];
+    const categoryIndex = categoryOrder.indexOf(categoryQuery);
+
+    alllistings = alllistings.filter((item, index) => {
+      if (item.category === categoryQuery) return true;
+      if (categoryIndex === -1) return false;
+
+      return index % 4 === categoryIndex % 4 || index % 6 === categoryIndex % 6;
+    });
+  }
+
+  if (searchQuery) {
+    alllistings = alllistings.filter((item) =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  res.render("listings/index", { alllistings, searchQuery, categoryQuery })
 };
 
 

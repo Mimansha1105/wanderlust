@@ -15,6 +15,7 @@ const path=require("path");
 const ejsmate= require("ejs-mate");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
+const GoogleStrategy=require("passport-google-oauth20").Strategy;
 const User=require("./models/user.js");
 const methodOverride=require("method-override");
 
@@ -83,6 +84,60 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
+
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || "/user/auth/google/callback",
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      const email = profile.emails && profile.emails[0] && profile.emails[0].value;
+
+      if (!email) {
+        return done(new Error("Google account email is required"));
+      }
+
+      let user = await User.findOne({ googleId: profile.id });
+
+      if (!user) {
+        user = await User.findOne({ email });
+      }
+
+      if (user) {
+        if (!user.googleId) {
+          user.googleId = profile.id;
+          await user.save();
+        }
+        return done(null, user);
+      }
+
+      const baseUsername = (profile.displayName || email.split("@")[0])
+        .replace(/\s+/g, "")
+        .toLowerCase();
+      let username = baseUsername;
+      let count = 1;
+
+      while (await User.findOne({ username })) {
+        username = `${baseUsername}${count}`;
+        count += 1;
+      }
+
+      user = new User({
+        username,
+        email,
+        googleId: profile.id,
+      });
+      await user.save();
+
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  }
+));
+}
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

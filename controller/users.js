@@ -7,7 +7,7 @@ module.exports.loginsignup=(req,res)=>{
  res.render("users/login.ejs");
 };
 
-module.exports.signup=async(req,res)=>{
+module.exports.signup=async(req,res,next)=>{
     try{
 let {username,email,password}=req.body;
 const newuser=new User({username,email});
@@ -26,7 +26,7 @@ res.redirect("/listings");
     catch(e){
 req.flash("error", e.message);
 
-  res.redirect("/signup");
+  res.redirect("/user/signup");
     }
 
 };
@@ -35,6 +35,10 @@ module.exports.welcomeback=(req, res) => {
   res.redirect(req.session.redirectUrl || "/listings");
  // Redirect to a working page
   };
+module.exports.googlecallback=(req,res)=>{
+  req.flash("success", "Welcome to Wanderlust!");
+  res.redirect(req.session.redirectUrl || "/listings");
+};
   module.exports.logout=(req,res,next)=>{
 req.logOut((err)=>{
   if(err){
